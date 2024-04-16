@@ -1,0 +1,37 @@
+Wcontrols: 1
+var_tipo:
+  - 2
+  - 1
+simulador: 1
+delsim: 1
+par_imex: 8
+q_prod:
+  - 0
+  - 0
+q_inj:
+  - 500
+  - 800
+bhp_prod:
+  - 36000
+  - 38000
+bhp_inj:
+  - 100
+  - 200
+t_concessao: 0
+num_prod: 9
+num_inj: 4
+control_steps: 64
+delta1: 0.15
+delta2: 0.25
+temporal: 5
+ac1: "templates/WAG_Mwells.tpl"
+ac7: "templates/WAG_Report.tpl"
+ac2: "Data"
+window_size: 32
+tpl_time_skip: 0.1
+time_estabilize: 30
+sim_time: 2048
+generate_tpl: true
+wag: true
+executa_imex: 'C:\"Program Files"\CMG\IMEX\2023.10\Win_x64\EXE\mx202310.exe -f '
+executa_report: '"C:\Program Files\CMG\RESULTS\2023.10\Win_x64\exe\report.exe" -f  '
