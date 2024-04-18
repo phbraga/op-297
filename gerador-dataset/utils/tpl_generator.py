@@ -30,7 +30,7 @@ def tpl_generator(crmp):
         inj1_template = ""
         for i in range(num_inj, num_inj * 2 - 1):
             inj1_template += "'I-" + str(i + 1) + "'  "
-        inj1_template += "'I-" + str(num_inj) + "'\n"
+        inj1_template += "'I-" + str(num_inj * 2) + "'\n"
         inj1_template = alter_template + inj1_template
 
         shutin0_template = ""
@@ -104,48 +104,35 @@ def tpl_generator(crmp):
                 timer[time - 1] = "*TIME " + str(time - 1) + "\n"
                 timer[time] = "*TIME " + str(time) + "\n"
                 timer[time + time_skip] = "*TIME " + str(time + time_skip) + "\n"
+            else:
+                timer[time + 1] = "*TIME " + str(time) + "\n"
 
         if time <= sim_time:
             timer[sim_time - 2] = "*TIME " + str(sim_time - 2) + "\n"
             timer[sim_time - 1] = "*TIME " + str(sim_time - 1) + "\n"
             timer[sim_time] = "*TIME " + str(sim_time) + "\n"
 
-
     # Read all base_file and put it in the variable "header"
     with open(base_file, "r") as f:
         header = f.readlines()
 
-
-
-    control_change_steps = 1
-    if "wag" in crmp.keys() and crmp["wag"]:
-        if control_change_steps > num_inj * 2:
-            control_change_steps = 1
-            if curr_inj_template == 0:
-                inj_template = inj1_template
-                curr_inj_template = 1
-            else:
-                inj_template = inj0_template
-                curr_inj_template = 0
-        
-        control_change_steps += 1
-
-
     generated_controls = []
     generated_controls_steps = 1
-    shutin_template = 0
+    shutin_template_id = 0
     for time, time_string in timer.items():
         generated_controls.append(time_string)
         if time in control_timers:
             generated_controls.append(control_strings[control_timers.index(time)])
             if "wag" in crmp.keys() and crmp["wag"]:
                 if generated_controls_steps > num_inj * 2:
-                    if shutin_template == 0:
+                    if shutin_template_id == 0:
                         generated_controls.append(shutin0_template)
-                        shutin_template = 1
+                        shutin_template_id = 1
                     else:
                         generated_controls.append(shutin1_template)
-                        shutin_template = 0
+                        shutin_template_id = 0
+
+                    generated_controls_steps = 1
                 
                 generated_controls_steps += 1
 
