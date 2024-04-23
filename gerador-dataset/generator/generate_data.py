@@ -24,7 +24,8 @@ def generate_data(crmp, cont, tag_data="x0"):
     TagMod, ac = read_param(crmp, crmp[tag_data])
     tags = manip_param_np(TagMod, crmp)
 
-    return write_outputs(tags, crmp, ac, cont)
+    if crmp["run_simulator"]:
+        return write_outputs(tags, crmp, ac, cont)
 
 
 def write_outputs(tags, crmp, ac, cont):
@@ -48,19 +49,19 @@ def write_outputs(tags, crmp, ac, cont):
     status = os.system(imexCmd)
     if status != 0:
         print("Error running imex!")
-        # raise Exception("Problem running IMEX.")
+        raise Exception("Problem running IMEX.")
 
     # Run REPORT.exe
     reportCmd = f"{crmp['executa_report']} {os.path.join(runDir, imexFile['rwd'])} -o {os.path.join(runDir, imexFile['rwo'])}"
     status = os.system(reportCmd)
     if status != 0:
         print("Error running report!")
-        # raise Exception("Problem running report.")
+        raise Exception("Problem running report.")
 
     # Process output data after running IMEX with defined tags
-    # report = pos_processador_crm(crmp, os.path.join(runDir, imexFile["rwo"]))
+    report = pos_processador_crm(crmp, os.path.join(runDir, imexFile["rwo"]))
 
     # Cleanup files
-    # clean_up(runDir, imexFile, crmp)
+    clean_up(runDir, imexFile, crmp)
 
-    # return report
+    return report

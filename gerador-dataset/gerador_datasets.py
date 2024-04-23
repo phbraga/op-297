@@ -64,15 +64,16 @@ def main(args):
                         control_wag_changes = 1
             
         R = generate_data(crmp, cont)
-        # reports.append(filter_report(R, crmp))
+        if crmp["run_simulator"]:
+            reports.append(filter_report(R, crmp))
 
-    dataset_name = crmp["ac1"].split("/")[1].split("_")[0]
-    # reports.sort(key=lambda x: x.shape[0])
-    # reshaped_reports = np.stack(
-    #     [reports[0]] + [report[: reports[0].shape[0], :] for report in reports[1:]]
-    # )
-    # np.save("Data/" + dataset_name + ".npy", reshaped_reports)
-
+    if crmp["run_simulator"]:
+        dataset_name = crmp["ac1"].split("/")[1].split("_")[0]
+        reports.sort(key=lambda x: x.shape[0])
+        reshaped_reports = np.stack(
+            [reports[0]] + [report[: reports[0].shape[0], :] for report in reports[1:]]
+        )
+        np.save("Data/" + dataset_name + ".npy", reshaped_reports)
 
 # Fazer gerador de template
 
@@ -84,11 +85,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num-amostras", help="Numero de amostras a serem geradas", type=int, default=1
     )
+
     parser.add_argument(
         "--init-counter",
         help="Numero de amostras ja geradas (Ponto de partida para a geracao atual)",
         type=int,
         default=0,
     )
+    
     args = parser.parse_args()
     main(args)

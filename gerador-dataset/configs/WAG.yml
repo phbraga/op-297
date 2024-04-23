@@ -9,11 +9,11 @@ q_prod:
   - 0
   - 0
 q_inj:
-  - 500
-  - 800
+  - 0.0001
+  - 0.0001
 q_inj_wag:
-  - 0.0001
-  - 0.0001
+  - 500
+  - 500
 bhp_prod:
   - 36000
   - 38000
@@ -30,16 +30,18 @@ control_steps: 10
 delta1: 0.15
 delta2: 0.25
 temporal: 5
-ac1: "templates/WAG_Mwells_header.tpl"
+ac1: "templates/WAG_Mwells_header_generated.tpl"
 ac7: "templates/WAG_Report.tpl"
 ac2: "Data"
 window_size: 5
-tpl_time_skip: 0.1
 time_estabilize: 30
-sim_time: 1800
-generate_tpl: true
-executa_imex: 'C:\"Program Files"\CMG\IMEX\2023.10\Win_x64\EXE\mx202310.exe -f '
-executa_report: '"C:\Program Files\CMG\RESULTS\2023.10\Win_x64\exe\report.exe" -f  '
+sim_time: 1900
+generate_tpl: false
+executa_imex: '"C:\Program Files (x86)\CMG\GEM\2017.10\Win_x64\EXE\gm201710.exe" -f '
+executa_report: '"C:\Program Files (x86)\CMG\BR\2017.10\Win_x64\EXE\report.exe" -f  '
 wag: true
 npw: 1
+delta_start: 0.1 # não pode ser maior que o window_size
+tpl_time_skip: 100
+run_simulator: false
 

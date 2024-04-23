@@ -79,14 +79,16 @@ def tpl_generator(crmp):
             control_timers.append(time_skip + int((i / control_steps) * to_divide))
 
         timer = {}
-        timer[1] = f"\n*TIME {time_skip}\n"
-        for time in np.arange(time_skip, sim_time, window_size):
+        timer[crmp['delta_start']] = f"\n*TIME {crmp['delta_start']}\n"
+        # print_timers = np.arange(int(time_skip), sim_time, window_size)
+        # for time in range(sim_time):
+        for time in np.arange(window_size, sim_time, window_size):
             if time in control_timers:
-                timer[time - 1] = "*TIME " + str(time - 1) + "\n"
+                # timer[time - 1] = "*TIME " + str(time - 1) + "\n"
                 timer[time] = "*TIME " + str(time) + "\n"
-                timer[time + 1] = "*TIME " + str(time + 1) + "\n"
+                timer[time + crmp["delta_start"]] = "*TIME " + str(time + crmp['delta_start']) + "\n"
             else:
-                timer[time + 1] = "*TIME " + str(time + 1) + "\n"
+                timer[time] = "*TIME " + str(time) + "\n"
         timer[sim_time] = "*TIME " + str(sim_time) + "\n"
     else:
         control_timers = []
@@ -96,14 +98,14 @@ def tpl_generator(crmp):
             control_timers.append(int(time_skip) + int((i / control_steps) * to_divide))
 
         timer = {}
-        timer[time_skip] = f"\n*TIME {time_skip}\n"
+        timer[crmp['delta_start']] = f"\n*TIME {crmp['delta_start']}\n"
         timer[2 * time_skip] = f"\n*TIME {2 * time_skip}\n"
         print_timers = np.arange(window_size, sim_time, window_size)
         for time in range(sim_time):
         # for time in np.arange(window_size, sim_time, window_size):
             if time in control_timers:
                 timer[time] = "*TIME " + str(time) + "\n"
-                timer[time + time_skip] = "*TIME " + str(time + time_skip) + "\n"
+                timer[time + crmp['delta_start']] = "*TIME " + str(time + crmp['delta_start']) + "\n"
             elif time in print_timers:
                 timer[time] = "*TIME " + str(time) + "\n"
 
