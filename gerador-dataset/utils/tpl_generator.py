@@ -56,7 +56,7 @@ def tpl_generator(crmp):
         inj_control += "\n"
 
         if "wag" in crmp.keys() and crmp["wag"]:
-            if control_change_steps > num_inj * 2:
+            if control_change_steps > crmp["npw"]:
                 control_change_steps = 1
                 if curr_inj_template == 0:
                     inj_template = inj1_template
@@ -98,14 +98,14 @@ def tpl_generator(crmp):
         timer = {}
         timer[time_skip] = f"\n*TIME {time_skip}\n"
         timer[2 * time_skip] = f"\n*TIME {2 * time_skip}\n"
-        for time in np.arange(window_size, sim_time, window_size):
+        print_timers = np.arange(window_size, sim_time, window_size)
+        for time in range(sim_time):
+        # for time in np.arange(window_size, sim_time, window_size):
             if time in control_timers:
-                timer[time - 2] = "*TIME " + str(time - 2) + "\n"
-                timer[time - 1] = "*TIME " + str(time - 1) + "\n"
                 timer[time] = "*TIME " + str(time) + "\n"
                 timer[time + time_skip] = "*TIME " + str(time + time_skip) + "\n"
-            else:
-                timer[time + 1] = "*TIME " + str(time) + "\n"
+            elif time in print_timers:
+                timer[time] = "*TIME " + str(time) + "\n"
 
         if time <= sim_time:
             timer[sim_time - 2] = "*TIME " + str(sim_time - 2) + "\n"
@@ -124,7 +124,7 @@ def tpl_generator(crmp):
         if time in control_timers:
             generated_controls.append(control_strings[control_timers.index(time)])
             if "wag" in crmp.keys() and crmp["wag"]:
-                if generated_controls_steps > num_inj * 2:
+                if generated_controls_steps > crmp["npw"]:
                     if shutin_template_id == 0:
                         generated_controls.append(shutin0_template)
                         shutin_template_id = 1

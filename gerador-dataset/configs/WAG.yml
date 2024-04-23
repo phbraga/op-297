@@ -11,16 +11,22 @@ q_prod:
 q_inj:
   - 500
   - 800
+q_inj_wag:
+  - 0.0001
+  - 0.0001
 bhp_prod:
   - 36000
   - 38000
 bhp_inj:
   - 100
   - 200
+bhp_inj_wag:
+  - 0.0001
+  - 0.0001
 t_concessao: 0
 num_prod: 9
 num_inj: 4
-control_steps: 60
+control_steps: 10
 delta1: 0.15
 delta2: 0.25
 temporal: 5
@@ -32,6 +38,8 @@ tpl_time_skip: 0.1
 time_estabilize: 30
 sim_time: 1800
 generate_tpl: true
-wag: true
 executa_imex: 'C:\"Program Files"\CMG\IMEX\2023.10\Win_x64\EXE\mx202310.exe -f '
 executa_report: '"C:\Program Files\CMG\RESULTS\2023.10\Win_x64\exe\report.exe" -f  '
+wag: true
+npw: 1
+

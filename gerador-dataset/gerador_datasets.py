@@ -45,34 +45,33 @@ def main(args):
             control_wag_x1 = 0
             control_wag_x2 = 0
             curr_wag_inj = 1
-            wag_inj = crmp["x1"]
-            wag_inj_i = 0
-            step = (crmp["num_prod"] + crmp["num_inj"]) * 8
+            step = (crmp["num_prod"] + crmp["num_inj"]) * crmp["npw"]
             for i in range(len(crmp["x0"])):
-                crmp["x0"][i] = wag_inj[wag_inj_i]
-                wag_inj_i += 1
+                if curr_wag_inj == 1:
+                    crmp["x0"][i] = crmp["x1"][control_wag_x1]
+                    control_wag_x1 += 1
+                    control_wag_changes += 1
+                    if control_wag_changes > step:
+                        curr_wag_inj = 2
+                        control_wag_changes = 1
+                else:
+                    crmp["x0"][i] = crmp["x2"][control_wag_x2]
+                    control_wag_x2 += 1
 
-                if control_wag_changes > step:
-                    if curr_wag_inj == 1:
-                        control_wag_x1 = wag_inj_i
-                        wag_inj_i = control_wag_x2
-                        wag_inj = crmp["x2"]
-                    else:
-                        control_wag_x2 = wag_inj_i
-                        wag_inj_i = control_wag_x1
-                        wag_inj = crmp["x1"]
+                    control_wag_changes += 1
+                    if control_wag_changes > step:
+                        curr_wag_inj = 1
+                        control_wag_changes = 1
             
-                control_wag_changes += 1
-        
         R = generate_data(crmp, cont)
-        reports.append(filter_report(R, crmp))
+        # reports.append(filter_report(R, crmp))
 
     dataset_name = crmp["ac1"].split("/")[1].split("_")[0]
-    reports.sort(key=lambda x: x.shape[0])
-    reshaped_reports = np.stack(
-        [reports[0]] + [report[: reports[0].shape[0], :] for report in reports[1:]]
-    )
-    np.save("Data/" + dataset_name + ".npy", reshaped_reports)
+    # reports.sort(key=lambda x: x.shape[0])
+    # reshaped_reports = np.stack(
+    #     [reports[0]] + [report[: reports[0].shape[0], :] for report in reports[1:]]
+    # )
+    # np.save("Data/" + dataset_name + ".npy", reshaped_reports)
 
 
 # Fazer gerador de template
