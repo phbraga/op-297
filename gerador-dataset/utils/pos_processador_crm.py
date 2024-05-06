@@ -35,7 +35,11 @@ def pos_processador_crm(crmp, sim_output_file):
         fid.readline()
 
     # Importing the data into a matrix.
-    col = 4 * crmp["num_prod"] + 2 * crmp["num_inj"] + 1
+    inj_multiplier = 2
+    if "wag" in crmp.keys() and crmp["wag"]:
+        inj_multiplier = 4
+
+    col = 4 * crmp["num_prod"] + inj_multiplier * crmp["num_inj"] + 1
     fid_read = np.loadtxt(fid, dtype=float)
     R = fid_read.reshape((-1, col))
     # Close the file.

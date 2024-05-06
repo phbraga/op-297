@@ -123,49 +123,49 @@
      			*PARAMETERS 'BHP'
   
    *COLUMN-FOR  *WELLS 'I-1'
-     			*PARAMETERS 'Water Rate SC'
+     			*PARAMETERS 'Gas Rate SC'
       
    *COLUMN-FOR  *WELLS 'I-2'
   			    *PARAMETERS 'BHP'
 
    *COLUMN-FOR  *WELLS 'I-2'
-     			*PARAMETERS 'Water Rate SC'
+     			*PARAMETERS 'Gas Rate SC'
   	 			
    *COLUMN-FOR  *WELLS 'I-3'
   			    *PARAMETERS 'BHP'
 
    *COLUMN-FOR  *WELLS 'I-3'
-     			*PARAMETERS 'Water Rate SC'
+     			*PARAMETERS 'Gas Rate SC'
               
    *COLUMN-FOR  *WELLS 'I-4'
    	    	    *PARAMETERS 'BHP'
 				
    *COLUMN-FOR  *WELLS 'I-4'
-     			*PARAMETERS 'Water Rate SC'
+     			*PARAMETERS 'Gas Rate SC'
   				    
    *COLUMN-FOR  *WELLS 'I-5'
                 *PARAMETERS 'BHP' 
 
    *COLUMN-FOR  *WELLS 'I-5'
-     			*PARAMETERS 'Gas Rate SC'
+     			*PARAMETERS 'Water Rate SC'
 				
    *COLUMN-FOR  *WELLS 'I-6'
                 *PARAMETERS 'BHP' 
 
    *COLUMN-FOR  *WELLS 'I-6'
-     			*PARAMETERS 'Gas Rate SC'
+     			*PARAMETERS 'Water Rate SC'
 
    *COLUMN-FOR  *WELLS 'I-7'
                 *PARAMETERS 'BHP' 
 
    *COLUMN-FOR  *WELLS 'I-7'
-     			*PARAMETERS 'Gas Rate SC'
+     			*PARAMETERS 'Water Rate SC'
 
    *COLUMN-FOR  *WELLS 'I-8'
                 *PARAMETERS 'BHP' 
 
    *COLUMN-FOR  *WELLS 'I-8'
-     			*PARAMETERS 'Gas Rate SC'				
+     			*PARAMETERS 'Water Rate SC'				
 		   
 *TABLE-END
 
