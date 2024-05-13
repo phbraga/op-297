@@ -9,6 +9,7 @@
 
 
 import numpy as np
+from joblib import Parallel, delayed
 
 from generator import generate_data
 from utils import (
@@ -17,6 +18,41 @@ from utils import (
     ponto_inicial,
     tpl_generator,
 )
+
+def run(crmp, cont, reports):
+    ## DEFINI��O DO PONTO DE PARTIDA | PONTO INICIAL PARA A SIMULA��O
+    crmp["x0"] = ponto_inicial(crmp)
+
+    if "wag" in crmp.keys() and crmp["wag"]:
+        crmp["x1"] = crmp["x0"].copy()
+        crmp["x2"] = ponto_inicial(crmp)
+        crmp["x0"] = np.empty_like(crmp["x2"])
+        
+        control_wag_changes = 1
+        control_wag_x1 = 0
+        control_wag_x2 = 0
+        curr_wag_inj = 1
+        step = (crmp["num_prod"] + crmp["num_inj"]) * crmp["npw"]
+        for i in range(len(crmp["x0"])):
+            if curr_wag_inj == 1:
+                crmp["x0"][i] = crmp["x1"][control_wag_x1]
+                control_wag_x1 += 1
+                control_wag_changes += 1
+                if control_wag_changes > step:
+                    curr_wag_inj = 2
+                    control_wag_changes = 1
+            else:
+                crmp["x0"][i] = crmp["x2"][control_wag_x2]
+                control_wag_x2 += 1
+
+                control_wag_changes += 1
+                if control_wag_changes > step:
+                    curr_wag_inj = 1
+                    control_wag_changes = 1
+        
+    R = generate_data(crmp, cont)
+    if crmp["run_simulator"]:
+        reports.append(filter_report(R, crmp))
 
 
 def main(args):
@@ -32,40 +68,12 @@ def main(args):
     crmp = get_params(dataset=args.dataset)
     if crmp["generate_tpl"]:
         tpl_generator(crmp)
-    for cont in range(init_counter, init_counter + num_amostras):
-        ## DEFINI��O DO PONTO DE PARTIDA | PONTO INICIAL PARA A SIMULA��O
-        crmp["x0"] = ponto_inicial(crmp)
 
-        if "wag" in crmp.keys() and crmp["wag"]:
-            crmp["x1"] = crmp["x0"].copy()
-            crmp["x2"] = ponto_inicial(crmp)
-            crmp["x0"] = np.empty_like(crmp["x2"])
-            
-            control_wag_changes = 1
-            control_wag_x1 = 0
-            control_wag_x2 = 0
-            curr_wag_inj = 1
-            step = (crmp["num_prod"] + crmp["num_inj"]) * crmp["npw"]
-            for i in range(len(crmp["x0"])):
-                if curr_wag_inj == 1:
-                    crmp["x0"][i] = crmp["x1"][control_wag_x1]
-                    control_wag_x1 += 1
-                    control_wag_changes += 1
-                    if control_wag_changes > step:
-                        curr_wag_inj = 2
-                        control_wag_changes = 1
-                else:
-                    crmp["x0"][i] = crmp["x2"][control_wag_x2]
-                    control_wag_x2 += 1
-
-                    control_wag_changes += 1
-                    if control_wag_changes > step:
-                        curr_wag_inj = 1
-                        control_wag_changes = 1
-            
-        R = generate_data(crmp, cont)
-        if crmp["run_simulator"]:
-            reports.append(filter_report(R, crmp))
+    if args.parallel:
+        Parallel(n_jobs=args.njobs)(delayed(run)(crmp, cont, reports) for cont in range(init_counter, init_counter + num_amostras))
+    else:
+        for cont in range(init_counter, init_counter + num_amostras):
+            run(crmp, cont, reports)    
 
     if crmp["run_simulator"]:
         dataset_name = crmp["ac1"].split("/")[1].split("_")[0]
@@ -91,6 +99,19 @@ if __name__ == "__main__":
         help="Numero de amostras ja geradas (Ponto de partida para a geracao atual)",
         type=int,
         default=0,
+    )
+
+    parser.add_argument(
+        "-p", "--parallel",
+        help="Ativa modo de execução paralelo",
+        action="store_true"
+    )
+
+    parser.add_argument(
+        "-j", "--njobs",
+        help="Numero de jobs paralelos",
+        type=int,
+        default=3,
     )
     
     args = parser.parse_args()

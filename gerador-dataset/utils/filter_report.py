@@ -15,6 +15,8 @@ def filter_report(array, crmp):
     num = crmp["window_size"]
     time_skip = crmp["tpl_time_skip"]
     time_estabilize = crmp["time_estabilize"]
+    if "wag" in crmp.keys() and crmp["wag"]:
+        time_estabilize = 0
     time_skip += time_estabilize
     array = array[array[:, 0].astype(int) >= time_skip]
     res = []
