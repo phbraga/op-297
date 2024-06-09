@@ -9,15 +9,17 @@ par_imex: 8
 q_prod:
   - 0
   - 0
+# agua
 q_inj:
-  - 1000.0001
-  - 1500.0001
-q_inj_wag:
-  - 500
+  - 3000
   - 3500
+# gas
+q_inj_wag:
+  - 1.5e+8
+  - 1.8e+8
 bhp_prod:
-  - 800
-  - 1000
+  - 3700
+  - 3800
 bhp_inj:
   - 100
   - 200
@@ -28,10 +30,10 @@ t_concessao: 0
 num_prod: 9
 num_inj: 4
 control_steps: 10
-delta1: 0.15
-delta2: 0.25
-temporal: 5
-ac1: "templates/WAG_Mwells_header.tpl"
+delta1: 0.10
+delta2: 0.15
+temporal: 2
+ac1: "templates/WAG_header.tpl"
 ac7: "templates/WAG_Report.tpl"
 ac2: "Data"
 window_size: 5

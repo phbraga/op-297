@@ -120,13 +120,13 @@ def tpl_generator(crmp):
 
     generated_controls = []
     generated_controls_steps = 1
-    shutin_template_id = 0
+    shutin_template_id = 1
     for time, time_string in timer.items():
         generated_controls.append(time_string)
         if time in control_timers:
             generated_controls.append(control_strings[control_timers.index(time)])
             if "wag" in crmp.keys() and crmp["wag"]:
-                if generated_controls_steps > crmp["npw"]:
+                if generated_controls_steps >= crmp["npw"]:
                     if shutin_template_id == 0:
                         generated_controls.append(shutin0_template)
                         shutin_template_id = 1

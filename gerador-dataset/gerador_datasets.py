@@ -73,7 +73,8 @@ def main(args):
         Parallel(n_jobs=args.njobs)(delayed(run)(crmp, cont, reports) for cont in range(init_counter, init_counter + num_amostras))
     else:
         for cont in range(init_counter, init_counter + num_amostras):
-            run(crmp, cont, reports)    
+            run(crmp, cont, reports)  
+        
 
     if crmp["run_simulator"]:
         dataset_name = crmp["ac1"].split("/")[1].split("_")[0]
@@ -91,7 +92,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", help="Dataset a ser criado", default="WAG")
     parser.add_argument(
-        "--num-amostras", help="Numero de amostras a serem geradas", type=int, default=1
+        "--num-amostras", help="Numero de amostras a serem geradas", type=int, default=5
     )
 
     parser.add_argument(
@@ -103,7 +104,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "-p", "--parallel",
-        help="Ativa modo de execução paralelo",
+        help="Ativa modo de execucao paralelo",
         action="store_true"
     )
 

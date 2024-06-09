@@ -15,7 +15,7 @@
                 *PARAMETERS 'BHP'            
 
    *COLUMN-FOR  *WELLS 'P-1'
-                *PARAMETERS 'Liquid Rate RC' 
+                *PARAMETERS 'Gas Rate SC' 
 
    *COLUMN-FOR  *WELLS 'P-1'
                 *PARAMETERS 'Oil Rate SC'   
@@ -27,7 +27,7 @@
                 *PARAMETERS 'BHP'
                    
    *COLUMN-FOR  *WELLS 'P-2'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
 
    *COLUMN-FOR  *WELLS 'P-2'
                 *PARAMETERS 'Oil Rate SC'   				
@@ -39,7 +39,7 @@
                 *PARAMETERS 'BHP'
 				
    *COLUMN-FOR  *WELLS 'P-3'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
 
    *COLUMN-FOR  *WELLS 'P-3'
                 *PARAMETERS 'Oil Rate SC'   
@@ -51,7 +51,7 @@
                 *PARAMETERS 'BHP'
                     				
    *COLUMN-FOR  *WELLS 'P-4'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
  
    *COLUMN-FOR  *WELLS 'P-4'
                 *PARAMETERS 'Oil Rate SC'   				
@@ -63,7 +63,7 @@
                 *PARAMETERS 'BHP'
                     				
    *COLUMN-FOR  *WELLS 'P-5'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
  
    *COLUMN-FOR  *WELLS 'P-5'
                 *PARAMETERS 'Oil Rate SC'   				
@@ -75,7 +75,7 @@
                 *PARAMETERS 'BHP'
                     				
    *COLUMN-FOR  *WELLS 'P-6'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
  
    *COLUMN-FOR  *WELLS 'P-6'
                 *PARAMETERS 'Oil Rate SC'   				
@@ -87,7 +87,7 @@
                 *PARAMETERS 'BHP'
                     				
    *COLUMN-FOR  *WELLS 'P-7'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
  
    *COLUMN-FOR  *WELLS 'P-7'
                 *PARAMETERS 'Oil Rate SC'   				
@@ -99,7 +99,7 @@
                 *PARAMETERS 'BHP'
                     				
    *COLUMN-FOR  *WELLS 'P-8'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
  
    *COLUMN-FOR  *WELLS 'P-8'
                 *PARAMETERS 'Oil Rate SC'   				
@@ -111,7 +111,7 @@
                 *PARAMETERS 'BHP'
                     				
    *COLUMN-FOR  *WELLS 'P-9'
-                *PARAMETERS 'Liquid Rate RC'
+                *PARAMETERS 'Gas Rate SC' 
  
    *COLUMN-FOR  *WELLS 'P-9'
                 *PARAMETERS 'Oil Rate SC'   				
