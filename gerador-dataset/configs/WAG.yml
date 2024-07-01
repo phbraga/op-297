@@ -2,9 +2,8 @@ Wcontrols: 1
 var_tipo:
   - 2
   - 1
-simulador: 1
-run_simulator: true
-delsim: 0
+simulator: true
+delsim: true
 par_imex: 8
 q_prod:
   - 0
@@ -34,14 +33,14 @@ delta1: 0.10
 delta2: 0.15
 temporal: 2
 ac1: "templates/WAG_header.tpl"
-ac7: "templates/WAG_Report.tpl"
+ac7: "templates/Wag_Report.tpl"
 ac2: "Data"
 window_size: 5
 time_estabilize: 0
 sim_time: 1900
 generate_tpl: true
-executa_imex: '"C:\Program Files\CMG\GEM\2023.10\Win_x64\EXE\gm202310.exe" -f '
-executa_report: '"C:\Program Files\CMG\RESULTS\2023.10\Win_x64\exe\report.exe" -f  '
+executa_imex: 'gm202310.exe -f '
+executa_report: 'report.exe -f  '
 wag: true
 npw: 1
 delta_start: 0.1 # não pode ser maior que o window_size

@@ -70,7 +70,7 @@ def tpl_generator(crmp):
         control = prod_template + prod_control + inj_template + inj_control
         control_strings.append(control)
 
-
+    time_open = None
     if isinstance(time_skip, int):
         control_timers = []
         to_divide = sim_time - time_skip
@@ -80,6 +80,7 @@ def tpl_generator(crmp):
 
         timer = {}
         timer[crmp['delta_start']] = f"\n*TIME {crmp['delta_start']}\n"
+        time_open = max(crmp['delta_start'], time_skip - 1)
         # print_timers = np.arange(int(time_skip), sim_time, window_size)
         # for time in range(sim_time):
         for time in np.arange(window_size, sim_time, window_size):
@@ -122,10 +123,20 @@ def tpl_generator(crmp):
     generated_controls_steps = 1
     shutin_template_id = 1
     for time, time_string in timer.items():
+        if time == time_skip:
+            if time_open is not None and "wag" in crmp.keys() and crmp["wag"]:
+                generated_controls.append("*TIME " + str(time_open) + "\n")
+                if shutin_template_id == 0:
+                    generated_controls.append(shutin0_template)
+                    shutin_template_id = 1
+                else:
+                    generated_controls.append(shutin1_template)
+                    shutin_template_id = 0
+                
         generated_controls.append(time_string)
         if time in control_timers:
             generated_controls.append(control_strings[control_timers.index(time)])
-            if "wag" in crmp.keys() and crmp["wag"]:
+            if "wag" in crmp.keys() and crmp["wag"] and time > time_skip:
                 if generated_controls_steps >= crmp["npw"]:
                     if shutin_template_id == 0:
                         generated_controls.append(shutin0_template)

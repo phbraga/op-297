@@ -43,7 +43,7 @@ def write_outputs(tags, crmp, ac, cont):
     # Populate the .rwd file used by results_report
     process_rwd(templaterwd, os.path.join(runDir, imexFile["rwd"]))
     
-    if crmp["run_simulator"]:
+    if crmp["simulator"]:
         # Run IMEX.exe
         imexCmd = f"{crmp['executa_imex']} {os.path.join(runDir, imexFile['Input'])} -log -jacpar -parasol {crmp['par_imex']} -wait"
         status = os.system(imexCmd)

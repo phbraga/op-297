@@ -10,7 +10,7 @@ def clean_up(run_dir, imex_file, crmp):
     crmp: (structure) CRMP parameters.
     """
 
-    if crmp["delsim"] == 1:
+    if crmp["delsim"]:
         os.remove(imex_file["Log"])
         os.remove(imex_file["Output"])
         os.remove(imex_file["Index"])

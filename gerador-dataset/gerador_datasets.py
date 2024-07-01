@@ -10,6 +10,7 @@
 
 import numpy as np
 from joblib import Parallel, delayed
+from dask.distributed import Client
 
 from generator import generate_data
 from utils import (
@@ -19,7 +20,7 @@ from utils import (
     tpl_generator,
 )
 
-def run(crmp, cont, reports):
+def run(crmp, cont):
     ## DEFINI��O DO PONTO DE PARTIDA | PONTO INICIAL PARA A SIMULA��O
     crmp["x0"] = ponto_inicial(crmp)
 
@@ -51,8 +52,11 @@ def run(crmp, cont, reports):
                     control_wag_changes = 1
         
     R = generate_data(crmp, cont)
-    if crmp["run_simulator"]:
-        reports.append(filter_report(R, crmp))
+    filter = None
+    if crmp["simulator"]:
+        filter = filter_report(R, crmp)
+
+    return filter
 
 
 def main(args):
@@ -64,19 +68,38 @@ def main(args):
     init_counter = args.init_counter
     num_amostras = args.num_amostras
     reports = []
+    gathered = []
     # Se o contador for diferente de 0, carrega o dataset anterior e faz stack com novo .npy diferente do carregado
     crmp = get_params(dataset=args.dataset)
     if crmp["generate_tpl"]:
         tpl_generator(crmp)
 
     if args.parallel:
-        Parallel(n_jobs=args.njobs)(delayed(run)(crmp, cont, reports) for cont in range(init_counter, init_counter + num_amostras))
+        # client = Client()
+        # control_jobs = 0
+        # for cont in range(init_counter, init_counter + num_amostras):
+        #     run_reports = client.submit(run, crmp, cont)
+        #     reports.append(run_reports)
+
+        #     control_jobs += 1
+        #     if control_jobs > 5:
+        #         gathered.append(client.gather(reports))
+        #         control_jobs = 0
+
+        # if control_jobs > 0:
+        #     gathered.append(client.gather(reports))
+
+        # reports = gathered
+
+        from joblib import Parallel, delayed
+        parallel = Parallel(n_jobs=2)
+        reports = parallel(delayed(run)(crmp, cont) for cont in range(init_counter, init_counter + num_amostras))
     else:
         for cont in range(init_counter, init_counter + num_amostras):
-            run(crmp, cont, reports)  
+            reports.append(run(crmp, cont))
         
 
-    if crmp["run_simulator"]:
+    if crmp["simulator"]:
         dataset_name = crmp["ac1"].split("/")[1].split("_")[0]
         reports.sort(key=lambda x: x.shape[0])
         reshaped_reports = np.stack(
@@ -92,7 +115,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", help="Dataset a ser criado", default="WAG")
     parser.add_argument(
-        "--num-amostras", help="Numero de amostras a serem geradas", type=int, default=5
+        "--num-amostras", help="Numero de amostras a serem geradas", type=int, default=100
     )
 
     parser.add_argument(
@@ -112,7 +135,7 @@ if __name__ == "__main__":
         "-j", "--njobs",
         help="Numero de jobs paralelos",
         type=int,
-        default=3,
+        default=4,
     )
     
     args = parser.parse_args()
